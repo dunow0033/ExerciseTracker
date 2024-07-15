@@ -30,11 +30,17 @@ namespace ExerciseTracker.Controllers
                     case 0:
                         _exerciseService.DisplayExercises();
                         AnsiConsole.WriteLine("Press any key to return to main menu");
-                        Console.ReadLine();
+                        Console.ReadKey();
                         break;
                     case 1:
                         AddNewExercise();
                         break;
+                    case -1:
+                        AnsiConsole.WriteLine();
+                        return;
+                    default:
+                        break;
+
                 }
             }
         }
@@ -42,6 +48,17 @@ namespace ExerciseTracker.Controllers
         private void AddNewExercise() 
         {
             DisplayNewExerciseView(out DateTime startDate, out DateTime endDate, out string? comments);
+            bool isSaved = _exerciseService.AddExercise(startDate, endDate, comments);
+            if(isSaved)
+            {
+                AnsiConsole.WriteLine("Exercise has been saved");
+            }
+            else
+            {
+                AnsiConsole.WriteLine("Exercise has not been saved");
+            }
+            AnsiConsole.WriteLine("Press any key to return to main menu");
+            Console.ReadKey();
         }
 
         private void DisplayNewExerciseView(out DateTime startDate, out DateTime endDate, out string? comments)

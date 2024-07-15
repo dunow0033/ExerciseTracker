@@ -153,3 +153,5 @@ C:\Users\Admin\source\repos\ExerciseTracker\ExerciseTracker\obj\Debug\net8.0\ref
 C:\Users\Admin\source\repos\ExerciseTracker\ExerciseTracker\obj\Debug\net8.0\ExerciseTracker.pdb
 C:\Users\Admin\source\repos\ExerciseTracker\ExerciseTracker\obj\Debug\net8.0\ExerciseTracker.genruntimeconfig.cache
 C:\Users\Admin\source\repos\ExerciseTracker\ExerciseTracker\obj\Debug\net8.0\ref\ExerciseTracker.dll
+C:\Users\Admin\source\repos\ExerciseTracker\ExerciseTracker\obj\Debug\net8.0\ExerciseTracker.sourcelink.json
+C:\Users\Admin\source\repos\ExerciseTracker\ExerciseTracker\bin\Debug\net8.0\appsettings.json

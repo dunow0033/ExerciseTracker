@@ -18,7 +18,14 @@ namespace ExerciseTracker.Repository
         }
         public bool AddExercise(Exercise exercise)
         {
-            throw new NotImplementedException();
+            _exerciseContext.Add(exercise);
+            int result = _exerciseContext.SaveChanges();
+
+            if(result > 0)
+            {
+                return true;
+            }
+            else { return false; }
         }
 
         public void DeleteExercise(Exercise exercise)
