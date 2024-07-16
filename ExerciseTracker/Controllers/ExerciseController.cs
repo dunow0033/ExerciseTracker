@@ -35,6 +35,14 @@ namespace ExerciseTracker.Controllers
                     case 1:
                         AddNewExercise();
                         break;
+                    case 2:
+                        DeleteExercise();
+                        AnsiConsole.WriteLine("Press any key to return to main menu");
+                        Console.ReadKey();
+                        break;
+                    case 3:
+                        UpdateExercise();
+                        break;
                     case -1:
                         AnsiConsole.WriteLine();
                         return;
@@ -43,6 +51,16 @@ namespace ExerciseTracker.Controllers
 
                 }
             }
+        }
+        private void DeleteExercise()
+        {
+            _exerciseService.DisplayExercises();
+            int id = _exerciseUI.GetExerciseId(AnsiConsole.Ask<int>("Which exercise do you want to delete?"));
+            if(id == -1)
+            {
+                return;
+            }
+            _exerciseService.DeleteExercise(id);
         }
 
         private void AddNewExercise() 
@@ -59,6 +77,69 @@ namespace ExerciseTracker.Controllers
             }
             AnsiConsole.WriteLine("Press any key to return to main menu");
             Console.ReadKey();
+        }
+
+        private void UpdateExercise()
+        {
+            _exerciseService.DisplayExercises();
+            int id = _exerciseUI.GetExerciseId(AnsiConsole.Ask<int>("Which exercise do you want to edit?"));
+            if(id == -1) { return; }
+            Exercise editExercise = _exerciseService.EditExercise(id);
+
+            bool isUpdated = _exerciseService.UpdateExercise(DisplayEditExerciseView(editExercise));
+
+            if(isUpdated)
+            {
+                AnsiConsole.WriteLine("Exercise has been updated!");
+            }
+            else
+            {
+                AnsiConsole.WriteLine("Couldn't update Exercise");
+            }
+            AnsiConsole.WriteLine("Press any key to return to main menu");
+            Console.ReadKey();
+        }
+
+        private Exercise DisplayEditExerciseView(Exercise editExercise)
+        {
+            AnsiConsole.Clear();
+            Helpers.RenderTitle($"Editing {editExercise.Id} Exercise");
+
+            string dateStart, dateEnd;
+
+            do
+            {
+                dateStart = AnsiConsole.Ask($"Edit the start of this exercise, Format : {dateFormat}", editExercise.DateStart.ToString(dateFormat, cultureInfo));
+                if (!Validator.ValidateDateTime(dateStart))
+                {
+                    AnsiConsole.WriteLine($"Invalid date, make sure the format is {dateFormat}");
+                }
+            } while (!Validator.ValidateDateTime(dateStart));
+
+            do
+            {
+                do
+                {
+                    dateEnd = AnsiConsole.Ask($"Edit the end of this exercise, Format : {dateFormat}", editExercise.DateEnd.ToString(dateFormat, cultureInfo));
+                    if (!Validator.ValidateDateTime(dateEnd))
+                    {
+                        AnsiConsole.WriteLine($"Invalid date, make sure the format is {dateFormat}");
+                    }
+                } while (!Validator.ValidateDateTime(dateEnd));
+            } while (!Validator.AreDatesValid(DateTime.ParseExact(dateStart, dateFormat, cultureInfo), DateTime.ParseExact(dateEnd, dateFormat, cultureInfo)));
+
+            AnsiConsole.WriteLine($"Edit current comments : '{editExercise.Comments}', press enter to continue");
+            string comments = Console.ReadLine();
+
+            editExercise.DateStart = DateTime.Parse(dateStart);
+            editExercise.DateEnd = DateTime.Parse(dateEnd);
+
+            if(comments != editExercise.Comments && comments != "")
+            {
+                editExercise.Comments = comments;
+            }
+
+            return editExercise;
         }
 
         private void DisplayNewExerciseView(out DateTime startDate, out DateTime endDate, out string? comments)

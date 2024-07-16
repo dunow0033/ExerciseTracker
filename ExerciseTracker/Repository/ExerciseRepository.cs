@@ -30,22 +30,41 @@ namespace ExerciseTracker.Repository
 
         public void DeleteExercise(Exercise exercise)
         {
-            throw new NotImplementedException();
+            _exerciseContext.Remove(exercise);
+            _exerciseContext.SaveChanges();
         }
 
         public bool EditExercise(Exercise exercise)
         {
-            throw new NotImplementedException();
+            _exerciseContext.Update(exercise);
+            int result = _exerciseContext.SaveChanges();
+
+            if (result > 0)
+                return true;
+            else
+                return false;
         }
 
         public Exercise EditExerciseById(int id)
         {
-            throw new NotImplementedException();
+            Exercise exercise = _exerciseContext.Exercises.Find(id);
+
+            return exercise;
         }
 
         public bool GetExerciseById(int id, out Exercise? exercise)
         {
-            throw new NotImplementedException();
+            exercise = null;
+            Exercise? _ = _exerciseContext.Exercises.Find(id);
+            if(_ == null)
+            {
+                return false;
+            }
+            else
+            {
+                exercise = _;
+                return true;
+            }
         }
 
         public IEnumerable<Exercise> GetExercises()

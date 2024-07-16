@@ -31,7 +31,18 @@ namespace ExerciseTracker.Services
 
         public void DeleteExercise(int id)
         {
-            throw new NotImplementedException();
+            if(!_exerciseRepository.GetExerciseById(id, out Exercise? exerciseToDelete))
+            {
+                AnsiConsole.WriteLine("Couldn't find the exercise you wanted to delete");
+                return;
+            }
+            if(exerciseToDelete == null)
+            {
+                AnsiConsole.WriteLine("Something went wrong when trying to get the exercise");
+                return;
+            }
+            _exerciseRepository.DeleteExercise(exerciseToDelete);
+            AnsiConsole.WriteLine("Successfully deleted exercise.");
         }
 
         public void DisplayExercises()
@@ -42,12 +53,12 @@ namespace ExerciseTracker.Services
 
         public Exercise EditExercise(int id)
         {
-            throw new NotImplementedException();
+            return _exerciseRepository.EditExerciseById(id);
         }
 
         public bool UpdateExercise(Exercise exercise)
         {
-            throw new NotImplementedException();
+            return _exerciseRepository.EditExercise(exercise);
         }
     }
 }
